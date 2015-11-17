@@ -1,0 +1,69 @@
+
+
+extends layout
+
+block content
+    .row
+      .col.s6
+        form(role='form', action="/login",method="post", style='max-width: 300px;')
+          .input-field
+            input(placeholder='Enter Email',id='for_email', type='text', name="email", class='validate')
+            label(for='for_email', class='active') Email
+          .input-field
+            input(placeholder='Enter Password',id='password', type='password', name="password", class='validate')
+            label(for='for_email', class='active') Password
+          button.btn(type='submit') Login           
+        br
+        a.waves-effect.waves-light.btn.modal-trigger(href='#sign-up-modal') Sign Up Now!
+
+      .col.s6
+        h5 Treasury simplifies group payments and makes it easy to see who has paid, who hasn't, how much money you have raised, and how close you are to reaching your goal.
+
+        p Insert Graphic Below
+   
+    #sign-up-modal.modal
+      .modal-content        
+        h4 Register your account below
+        br
+        form.col.s6.offset-s3(role='form', action="/register",method="post", style='max-width: 300px;')
+          .input-field
+            input(placeholder='John Doe',id='for_email', type='text', name="name")
+            label(for='for_email') Name
+          .input-field
+            input(placeholder='Enter Password',id='password', type='text', name="email", class='validate')
+            label(for='for_email', class='active') Email
+          .input-field
+            input(placeholder='Enter Password',id='password', type='password', name="password", class='validate')
+            label(for='for_email', class='active') Password            
+          button.btn(type='submit') Submit         
+
+
+
+  .modal.fade#myModal(tabindex="-1" role="dialog")
+    .modal-dialog.modal-sm
+      .modal-content
+        .modal-header
+          button.close(type="button" data-dismiss="modal" aria-label="Close")
+            span(aria-hidden="true")
+              &times
+        .modal-body
+              p.lead Register your account below
+              br
+              form(role='form', action="/register",method="post", style='max-width: 300px;')
+                .form-group
+                    input.form-control(type='text', name="name", placeholder='John Doe')
+                .form-group
+                    input.form-control(type='text', name="email", placeholder='Enter Email')
+                .form-group
+                  input.form-control(type='password', name="password", placeholder='Password')
+                button.btn.brand-button(type='submit') Submit
+                a(href='/')
+                  button.btn.btn-default(type="button") Cancel
+
+
+
+
+
+
+
+

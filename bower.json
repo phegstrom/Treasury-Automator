@@ -1,0 +1,21 @@
+{
+  "name": "Treasury",
+  "version": "0.0.0",
+  "homepage": "https://github.com/phegstrom/Treasury",
+  "authors": [
+    "Ryan Toussaint <ryan.toussaint@duke.edu>"
+  ],
+  "description": "Venmo API app",
+  "moduleType": [
+    "globals",
+    "node"
+  ],
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "react": "~0.13.1",
+    "bootstrap": "~3.3.4",
+    "socket.io-client": "~1.3.5",
+    "sweetalert": "~1.1.3"
+  }
+}
