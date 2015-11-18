@@ -1,5 +1,3 @@
-
-
 extends layout
 
 block content
@@ -20,7 +18,7 @@ block content
         h5 Treasury simplifies group payments and makes it easy to see who has paid, who hasn't, how much money you have raised, and how close you are to reaching your goal.
 
         p Insert Graphic Below
-   
+
     #sign-up-modal.modal
       .modal-content        
         h4 Register your account below
@@ -34,31 +32,12 @@ block content
             label(for='for_email', class='active') Email
           .input-field
             input(placeholder='Enter Password',id='password', type='password', name="password", class='validate')
-            label(for='for_email', class='active') Password            
-          button.btn(type='submit') Submit         
-
-
-
-  .modal.fade#myModal(tabindex="-1" role="dialog")
-    .modal-dialog.modal-sm
-      .modal-content
-        .modal-header
-          button.close(type="button" data-dismiss="modal" aria-label="Close")
-            span(aria-hidden="true")
-              &times
-        .modal-body
-              p.lead Register your account below
-              br
-              form(role='form', action="/register",method="post", style='max-width: 300px;')
-                .form-group
-                    input.form-control(type='text', name="name", placeholder='John Doe')
-                .form-group
-                    input.form-control(type='text', name="email", placeholder='Enter Email')
-                .form-group
-                  input.form-control(type='password', name="password", placeholder='Password')
-                button.btn.brand-button(type='submit') Submit
-                a(href='/')
-                  button.btn.btn-default(type="button") Cancel
+            label(for='for_email', class='active') Password
+          br          
+          button.btn-flat(type='submit') Submit
+            i.material-icons.right done
+          a.waves-effect.waves-light.btn-flat.modal-action.modal-close(href='#sign-up-modal') Cancel
+            i.material-icons.right clear
 
 
 

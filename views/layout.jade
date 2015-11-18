@@ -7,12 +7,9 @@ html
     link(rel='stylesheet', href='./css/layout.css')
     link(rel='stylesheet', href='http://fonts.googleapis.com/icon?family=Material+Icons')
 
-
     //- drop
     link(rel='stylesheet', href='./css/dropzone/dropzone.css')
     link(rel='stylesheet', href='./css/dropzone/customize.css')
-
-
 
     block scripts
       script(src='./bower_components/jquery/dist/jquery.min.js')
@@ -39,14 +36,12 @@ html
         if(user)
           ul#nav-mobile.right
             li
-              if(user.isConnected)
-                a(href="#") 
-                  img(alt="Venmo Authenticated" src="./img/checkmark.png") 
-                  span Venmo
+              if (user.isConnected)
+                a(href="#") Venmo Connected
+                  i.material-icons.left done
               else
-                a(href="/auth") 
-                  img(alt="Venmo Not Authenticated" src="./img/x.svg") 
-                  span Connect with Venmo
+                a(href="/auth") Connect with Venmo
+                  i.material-icons.left clear
             li 
               a(href="#") Signed in as #{user.name} 
             li

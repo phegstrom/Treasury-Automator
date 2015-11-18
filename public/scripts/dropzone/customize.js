@@ -10,7 +10,7 @@ Dropzone.options.myDropzone = {
 
     var uploadButton = document.querySelector("#upload-all");
     var submitButton = document.querySelector('#submitChargeButton');
-    var cancelChargeButton = document.querySelector('#cancel-button');
+    var cancelChargeButton = document.querySelector('#cancel-buttons');
     this.fileCount = 0;
 
     myDropzone = this; // closure
@@ -28,12 +28,12 @@ Dropzone.options.myDropzone = {
             data: JSON.stringify(venmoRequest),  //NEED THESE       
             contentType: 'application/json; charset=UTF-8', //NEED THESE
             success: function(resp) {  //line 95 from usergroupRoutes.js            
-              $('#charge-review-modal').modal('hide');
+              $('#charge-review-modal').closeModal();
               $('ul.charge-preview-list').empty();
-              $('#charge-review-modal-success').modal('show');
+              $('#charge-review-modal-success').openModal();
             },
             error: function() {
-              $('#charge-review-modal').modal('hide');
+              $('#charge-review-modal').closeModal();
               $('ul.charge-preview-list').empty();
               alert('Excel file not in correct format! Try again...');
             }
@@ -41,7 +41,7 @@ Dropzone.options.myDropzone = {
     }); 
 
     cancelChargeButton.addEventListener('click', function() {
-      $('#charge-review-modal').modal('hide');
+      $('#charge-review-modal').closeModal();
       $('ul.charge-preview-list').empty();
     });   
 
@@ -66,7 +66,7 @@ Dropzone.options.myDropzone = {
         populateModal(responseText);
         venmoRequest = responseText;
         setTimeout(function() {
-          $('#charge-review-modal').modal({backdrop: 'static', keyboard: false});
+          $('#charge-review-modal').openModal();
           myDropzone.removeFile(file);
         }, 1000);
       }
@@ -99,7 +99,7 @@ function populateModal(returnedArray) {
   for (var i = 0; i < returnedArray.length; i++) {
     var user = returnedArray[i];
     var amt = (user.amount < 0) ? user.amount * -1 : user.amount; // can only do charges
-    var str = '<li id="chargeLI" class="list-group-item"><span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span><span class="title">'+user.phone+'</span><p>for: '+user.note+'</p><br>$'+amt+'</li>';
+    var str = '<li id="chargeLI" class="collection-item avatar"><i class="material-icons circle">account circle</i></span><span class="title">'+user.phone+'</span><p>for: '+user.note+'</p><br>$'+amt+'</li>';
     myUL.append(str);
   }
 }
