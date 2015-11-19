@@ -91,6 +91,8 @@ function createVenmoObjects(excel, req) {
 	for (var i = 1; i < excel.length; i++) {
 		var amt = excel[i][2];
 		amt = (amt < 0) ? amt : amt * -1; // can only do charges
+		amt = amt.toFixed(2); // only two decimals
+		console.log('amount: ' + amt);
 		var obj = {
 					access_token: req.session.user.access_token,
 					phone: excel[i][0],
