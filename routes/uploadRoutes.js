@@ -46,20 +46,44 @@ router.put('/', function (req, res, next) {
 		console.log('got results');
 		console.log(results);
 		var allGood = true;
-		results.forEach(function(result, index) {
-			console.log('charge: ' + index);
-			if(result.value) console.log(result.value.data.payment.target);
-			else {
-				console.log(result.reason);
-				allGood = false;
-			}
-			
-		});
-
+		var toRet = createReturnBody(results, req.body)
+		// results.forEach(function(result, index) {
+		// 	console.log('charge: ' + index);
+		// 	if(result.value) console.log(result.value.data.payment.target);
+		// 	else {
+		// 		console.log(result.reason);
+		// 		allGood = false;
+		// 	}
 		res.status(200).end();
+			
+		// });
+
+		
 	});
 });
 
+// function that parses return from venmo server responses
+// and sends easy to use form to front end
+function createReturnBody(results, originalBody) {
+	var toRet = [];
+	for (var i = 0; i < results.length; i++) {
+		var myLI = originalBody[i];
+		if (results[i].reason) {
+			myLI.err = results[i].reason.error.message;
+			myLI.name = 'unknown';
+		} else {
+			if (results[i].value.data.payment.target.user == null) {
+				myLI.err = 'user not found in system, check phone number';	
+			}
+			myLI.name = results[i].value.data.payment.target.user;
+		}
+
+		toRet.push(myLI);
+	}
+	console.log(toRet);
+	return toRet;
+
+}
 
 // returns promise that resolves when all charges have resolved
 // resolve or reject, must check status upon return of this method

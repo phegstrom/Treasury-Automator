@@ -1,3 +1,15 @@
 .button-container {
 	text-align: center
 }
+
+#example-spreadsheet-modal {
+	max-height: 100%;
+}
+
+#connected-icon {
+	color: green;
+}
+
+#not-connected-icon {
+	color: red;
+}

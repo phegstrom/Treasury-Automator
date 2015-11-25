@@ -38,10 +38,10 @@ html
             li
               if (user.isConnected)
                 a(href="#") Venmo Connected
-                  i.material-icons.left done
+                  i.material-icons.left#connected-icon done
               else
-                a(href="/auth") Connect with Venmo
-                  i.material-icons.left clear
+                a(href="/auth") Venmo Not Connected
+                  i.material-icons.left#not-connected-icon clear
             li 
               a(href="#") Signed in as #{user.name} 
             li

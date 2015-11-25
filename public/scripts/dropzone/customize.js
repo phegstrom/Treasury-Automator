@@ -27,12 +27,12 @@ Dropzone.options.myDropzone = {
             url: '/file-upload', //API request
             data: JSON.stringify(venmoRequest),  //NEED THESE       
             contentType: 'application/json; charset=UTF-8', //NEED THESE
-            success: function(resp) {  //line 95 from usergroupRoutes.js            
+            success: function(resp) {           
               $('#charge-review-modal').closeModal();
               $('ul.charge-preview-list').empty();
               $('#charge-review-modal-success').openModal({dismissable: false});
             },
-            error: function() {
+            error: function(resp) {
               $('#charge-review-modal').closeModal();
               $('ul.charge-preview-list').empty();
               alert('Excel file not in correct format! Try again...');
@@ -93,7 +93,10 @@ Dropzone.options.myDropzone = {
 
 };
 
-
+function populateSuccessModal(response) {
+  var myUL = $('#charge-receipt-list'); 
+  // TODO: handle venmo return object
+}
 
 function populateModal(returnedArray) {                                          
   var myUL = $('ul.charge-preview-list');
