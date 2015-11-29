@@ -6,10 +6,10 @@
 	max-height: 100%;
 }
 
-#connected-icon {
+.connected-icon {
 	color: green;
 }
 
-#not-connected-icon {
+.not-connected-icon {
 	color: red;
 }

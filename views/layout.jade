@@ -17,9 +17,10 @@ html
       script.
         $(document).ready(function() {
           $('.modal-trigger').leanModal();
+          $('.tooltipped').tooltip({delay: 50});
         })
-
-      script(src="./scripts/dropzone/dropzone.js")
+  
+      script(src="./scripts/dropzone/dropzone.js") 
       script(src="./scripts/dropzone/customize.js")  
 
       //- this loads initial data from the server and react can use it
@@ -31,17 +32,17 @@ html
   body
     nav
       .nav-wrapper
-        a(href="#").brand-logo.left
+        a(href="#").brand-logo.left 
           #brand Treasury
         if(user)
           ul#nav-mobile.right
             li
               if (user.isConnected)
                 a(href="#") Venmo Connected
-                  i.material-icons.left#connected-icon done
+                  i.material-icons.left.connected-icon done
               else
                 a(href="/auth") Venmo Not Connected
-                  i.material-icons.left#not-connected-icon clear
+                  i.material-icons.left.not-connected-icon clear
             li 
               a(href="#") Signed in as #{user.name} 
             li

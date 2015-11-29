@@ -11,6 +11,7 @@ Dropzone.options.myDropzone = {
     var uploadButton = document.querySelector("#upload-all");
     var submitButton = document.querySelector('#submitChargeButton');
     var cancelChargeButton = document.querySelector('#cancel-buttons');
+    var closeSuccessModalButton = document.querySelector('#close-success-button');
     this.fileCount = 0;
 
     myDropzone = this; // closure
@@ -30,7 +31,9 @@ Dropzone.options.myDropzone = {
             success: function(resp) {           
               $('#charge-review-modal').closeModal();
               $('ul.charge-preview-list').empty();
-              $('#charge-review-modal-success').openModal({dismissable: false});
+              populateSuccessModal(resp);
+              $('.tooltipped').tooltip({delay: 10});
+              $('#charge-review-modal-success').openModal({dismissible: false});
             },
             error: function(resp) {
               $('#charge-review-modal').closeModal();
@@ -43,10 +46,13 @@ Dropzone.options.myDropzone = {
     cancelChargeButton.addEventListener('click', function() {
       $('#charge-review-modal').closeModal();
       $('ul.charge-preview-list').empty();
-    });   
+    });
 
-    // You might want to show the submit button only when 
-    // files are dropped here:
+    closeSuccessModalButton.addEventListener('click', function() {
+      $('#charge-review-modal-success').closeModal();
+      $('ul.charge-receipt-list').empty();
+    });        
+
     this.on("addedfile", function() {
       myDropzone.fileCount++;
       $("#upload-all").show();
@@ -94,8 +100,18 @@ Dropzone.options.myDropzone = {
 };
 
 function populateSuccessModal(response) {
-  var myUL = $('#charge-receipt-list'); 
+  var myUL = $('.charge-receipt-list'); 
   // TODO: handle venmo return object
+  for (var i = 0; i < response.length; i++) {
+    var user = response[i];
+    var amt = (user.amount < 0) ? user.amount * -1 : user.amount; // can only do charges    
+    var myIconType = (user.err) ? 'clear' : 'done';
+    var iconClass =  (user.err) ? 'not-connected-icon' : 'connected-icon';
+    var tooltipString =  (user.err) ? user.err : 'success';
+    var str = '<li id="chargeLI" class="collection-item avatar"><i class="material-icons circle">account_circle</i><span class="title">'+user.phone+'</span><p>for: '+user.note+'</p><br>$'+amt+'<a href="#!" class="secondary-content tooltipped" data-position="top" data-delay="50" data-tooltip="'+tooltipString+'"><i class="material-icons '+iconClass+'">'+myIconType+'</i></a></li>';
+    myUL.append(str);
+  }
+
 }
 
 function populateModal(returnedArray) {                                          
@@ -103,7 +119,7 @@ function populateModal(returnedArray) {
   for (var i = 0; i < returnedArray.length; i++) {
     var user = returnedArray[i];
     var amt = (user.amount < 0) ? user.amount * -1 : user.amount; // can only do charges
-    var str = '<li id="chargeLI" class="collection-item avatar"><i class="material-icons circle">account circle</i></span><span class="title">'+user.phone+'</span><p>for: '+user.note+'</p><br>$'+amt+'</li>';
+    var str = '<li id="chargeLI" class="collection-item avatar"><i class="material-icons circle">account_circle</i><span class="title">'+user.phone+'</span><p>for: '+user.note+'</p><br>$'+amt+'</li>';
     myUL.append(str);
   }
 }

@@ -42,23 +42,14 @@ router.post('/', upload.any(), function (req, res, next) {
 // issues the charges to venmo
 router.put('/', function (req, res, next) {
 	console.log('issuing venmo charges...');
-	issueAllVenmoCharges(req.body).then(function(results) {
+	issueAllVenmoCharges(req.body, req.session.user.access_token).then(function(results) {
 		console.log('got results');
 		console.log(results);
 		var allGood = true;
 		var toRet = createReturnBody(results, req.body)
-		// results.forEach(function(result, index) {
-		// 	console.log('charge: ' + index);
-		// 	if(result.value) console.log(result.value.data.payment.target);
-		// 	else {
-		// 		console.log(result.reason);
-		// 		allGood = false;
-		// 	}
-		res.status(200).end();
-			
-		// });
 
-		
+		res.status(200).send(toRet);
+					
 	});
 });
 
@@ -66,14 +57,17 @@ router.put('/', function (req, res, next) {
 // and sends easy to use form to front end
 function createReturnBody(results, originalBody) {
 	var toRet = [];
+
 	for (var i = 0; i < results.length; i++) {
 		var myLI = originalBody[i];
+		delete myLI.access_token;
+		// promise returned an error
 		if (results[i].reason) {
 			myLI.err = results[i].reason.error.message;
 			myLI.name = 'unknown';
-		} else {
+		} else { // it worked, now check if user in system
 			if (results[i].value.data.payment.target.user == null) {
-				myLI.err = 'user not found in system, check phone number';	
+				//myLI.err = 'user not found in system, check phone number';	
 			}
 			myLI.name = results[i].value.data.payment.target.user;
 		}
@@ -82,23 +76,22 @@ function createReturnBody(results, originalBody) {
 	}
 	console.log(toRet);
 	return toRet;
-
 }
 
 // returns promise that resolves when all charges have resolved
 // resolve or reject, must check status upon return of this method
-function issueAllVenmoCharges (venmoBodyArray) {
+function issueAllVenmoCharges (venmoBodyArray, access_token) {
 	console.log('Charge count: ' + venmoBodyArray.length);
 	return Q.allSettled(venmoBodyArray.map(function(venmoBody, index) {
-		return issueVenmoChargeAsynch(venmoBody, index);
+		return issueVenmoChargeAsynch(venmoBody, index, access_token);
 	}));
 }
 
 // asynch part of the function, will create a promise and return it
 // on a per charge basis
-function issueVenmoChargeAsynch(venmoBody, index) {
+function issueVenmoChargeAsynch(venmoBody, index, access_token) {
 	var deferred = Q.defer();
-
+	venmoBody.access_token = access_token;
 	request.post(BASE_URL, {form: venmoBody}, function (err, resp, receipt) {
 		console.log('received Venmo response ' + index);
 		receipt = JSON.parse(receipt);
@@ -118,7 +111,6 @@ function createVenmoObjects(excel, req) {
 		amt = amt.toFixed(2); // only two decimals
 		console.log('amount: ' + amt);
 		var obj = {
-					access_token: req.session.user.access_token,
 					phone: excel[i][0],
 					note: excel[i][1],
 					amount: amt,
