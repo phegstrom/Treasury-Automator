@@ -1,61 +1,25 @@
 var THUMBNAIL_PATH = './img/fileUploadThumbnail.png';
-var venmoRequest;
+var controller = require('../buttons.js');
 
 Dropzone.options.myDropzone = {
-
-  // Prevents Dropzone from uploading dropped files immediately
+	
   autoProcessQueue: false,
 
   init: function() {
 
-    var uploadButton = document.querySelector("#upload-all");
-    var submitButton = document.querySelector('#submitChargeButton');
-    var cancelChargeButton = document.querySelector('#cancel-buttons');
-    var closeSuccessModalButton = document.querySelector('#close-success-button');
     this.fileCount = 0;
-
     myDropzone = this; // closure
+
     $("#upload-all").hide();
 
+    var uploadButton = document.querySelector("#upload-all");
     uploadButton.addEventListener("click", function() {
-      myDropzone.processQueue(); // Tell Dropzone to process all queued files.
-    });
-
-    submitButton.addEventListener("click", function() {
-
-          $.ajax({
-            type: 'PUT',
-            url: '/file-upload', //API request
-            data: JSON.stringify(venmoRequest),  //NEED THESE       
-            contentType: 'application/json; charset=UTF-8', //NEED THESE
-            success: function(resp) {           
-              $('#charge-review-modal').closeModal();
-              $('ul.charge-preview-list').empty();
-              populateSuccessModal(resp);
-              $('.tooltipped').tooltip({delay: 10});
-              $('#charge-review-modal-success').openModal({dismissible: false});
-            },
-            error: function(resp) {
-              $('#charge-review-modal').closeModal();
-              $('ul.charge-preview-list').empty();
-              alert('Excel file not in correct format! Try again...');
-            }
-          });
-    }); 
-
-    cancelChargeButton.addEventListener('click', function() {
-      $('#charge-review-modal').closeModal();
-      $('ul.charge-preview-list').empty();
-    });
-
-    closeSuccessModalButton.addEventListener('click', function() {
-      $('#charge-review-modal-success').closeModal();
-      $('ul.charge-receipt-list').empty();
-    });        
+		myDropzone.processQueue(); // Tell Dropzone to process all queued files.
+    })
 
     this.on("addedfile", function() {
-      myDropzone.fileCount++;
-      $("#upload-all").show();
+	    myDropzone.fileCount++;
+	    $("#upload-all").show();
     });
 
     this.on("removedfile", function() {
@@ -64,33 +28,32 @@ Dropzone.options.myDropzone = {
     });
 
     this.on("success", function(file, responseText) {
-      console.log('reeived response text');
-      if (responseText.err) {
-        alert(responseText.err);
-        myDropzone.removeFile(file);
-      } else {
-        populateModal(responseText);
-        venmoRequest = responseText;
-        setTimeout(function() {
-          $('#charge-review-modal').openModal({dismissible: false});
-          myDropzone.removeFile(file);
-        }, 1000);
+      	if (responseText.err) {
+        	alert(responseText.err);
+        	myDropzone.removeFile(file);
+      	} else {
+        	controller.populatePreviewModal(responseText);
+        	setTimeout(function() {
+	          	$('#charge-review-modal').openModal({dismissible: false});
+	          	myDropzone.removeFile(file);
+        	}, 1000);
       }
     });
 
     this.on('maxfilesexceeded', function(file) {
-      myDropzone.removeFile(file);
-      alert('You can only upload one file at a time.');
+		myDropzone.removeFile(file);
+		alert('You can only upload one file at a time.');
     });
 
     this.on("error", function(file, responseText) {
-      if (responseText == "You can't upload files of this type.") {
-        myDropzone.removeFile(file);
-        alert(responseText);                                     
-      }
+		if (responseText == "You can't upload files of this type.") {
+			myDropzone.removeFile(file);
+			alert(responseText);                                     
+		}
     });    
 
   },
+
   acceptedFiles: '.xls, .xlsx',
   maxFiles: 1,
   addRemoveLinks: true,
@@ -98,28 +61,3 @@ Dropzone.options.myDropzone = {
   dictDefaultMessage: "Drop .xls or .xlsx file here to create charge"
 
 };
-
-function populateSuccessModal(response) {
-  var myUL = $('.charge-receipt-list'); 
-  // TODO: handle venmo return object
-  for (var i = 0; i < response.length; i++) {
-    var user = response[i];
-    var amt = (user.amount < 0) ? user.amount * -1 : user.amount; // can only do charges    
-    var myIconType = (user.err) ? 'clear' : 'done';
-    var iconClass =  (user.err) ? 'not-connected-icon' : 'connected-icon';
-    var tooltipString =  (user.err) ? user.err : 'success';
-    var str = '<li id="chargeLI" class="collection-item avatar"><i class="material-icons circle">account_circle</i><span class="title">'+user.phone+'</span><p>for: '+user.note+'</p><br>$'+amt+'<a href="#!" class="secondary-content tooltipped" data-position="top" data-delay="50" data-tooltip="'+tooltipString+'"><i class="material-icons '+iconClass+'">'+myIconType+'</i></a></li>';
-    myUL.append(str);
-  }
-
-}
-
-function populateModal(returnedArray) {                                          
-  var myUL = $('ul.charge-preview-list');
-  for (var i = 0; i < returnedArray.length; i++) {
-    var user = returnedArray[i];
-    var amt = (user.amount < 0) ? user.amount * -1 : user.amount; // can only do charges
-    var str = '<li id="chargeLI" class="collection-item avatar"><i class="material-icons circle">account_circle</i><span class="title">'+user.phone+'</span><p>for: '+user.note+'</p><br>$'+amt+'</li>';
-    myUL.append(str);
-  }
-}

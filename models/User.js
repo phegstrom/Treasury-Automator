@@ -18,7 +18,8 @@ var UserSchema = new Schema({
     refresh_token: {type: String, default: null},
     tokenExpireDate: Date,
 	dateCreated: {type: Date, default: Date.now},
-    isConnected: Boolean
+    isConnected: Boolean,
+    lastRequestBody: Object
 }, {collection: collectionName});
 
 var options = {usernameField: 'email'};

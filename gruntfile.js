@@ -19,13 +19,11 @@ module.exports = function(grunt){
 		},
         browserify: {
             options: {
-                debug: true ,
-                extensions: [ '.jsx' ],
-                transform: [ 'reactify' ]
+                debug: true 
             },
-            jsx: {
-                src: ['./react/**/*.jsx'],
-                dest: './public/scripts/react/bundle.js'
+            js: {
+                src: ['./public/scripts/buttons.js', './public/scripts/dropzone/dzone-customize.js'],
+                dest: './public/scripts/bundle.js'
             }
         },		
 		sass: {
@@ -96,6 +94,7 @@ module.exports = function(grunt){
 	// type 'grunt <task alias name>'
 	grunt.registerTask('react', ['browserify']);
 	grunt.registerTask('css', ['sass', 'concat:css', 'cssmin']);
-	grunt.registerTask('build', ['browserify', 'sass', 'concat', 'cssmin']);
+	//grunt.registerTask('build', ['browserify', 'sass', 'concat', 'cssmin']);
+	grunt.registerTask('build', ['browserify']);
 
 };

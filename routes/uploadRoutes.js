@@ -4,6 +4,7 @@ var xlsx = require('node-xlsx');
 var multer = require('multer');
 var Q = require('q');
 var request = require('request');
+var User = require('../models/User');
 
 var config = require('../config/index');
 var BASE_URL = config.Venmo_BASE_URL;
@@ -34,23 +35,31 @@ router.post('/', upload.any(), function (req, res, next) {
 	if(obj[0].data[0].length != 3) venmoArray = {err: 'file not in correct format!'};
 	else venmoArray = createVenmoObjects(obj[0].data, req);
 	
-	console.log(venmoArray);
-	
-	res.status(200).send(venmoArray);
+	// console.log(venmoArray);
+
+	User.findOneAndUpdate({_id: req.session.user._id}, {lastRequestBody: venmoArray}, function (err, doc) {
+		if (err) next(err);
+		res.status(200).send(venmoArray);	
+	})	
 });
 
 // issues the charges to venmo
 router.put('/', function (req, res, next) {
 	console.log('issuing venmo charges...');
-	issueAllVenmoCharges(req.body, req.session.user.access_token).then(function(results) {
-		console.log('got results');
-		console.log(results);
-		var allGood = true;
-		var toRet = createReturnBody(results, req.body)
+	User.findOne({_id: req.session.user._id}).exec(function(err, user) {
+		if (err) next(err);
+		console.log(user.lastRequestBody);
+		issueAllVenmoCharges(user.lastRequestBody, req.session.user.access_token).then(function(results) {
+			console.log('got results');
+			console.log(results);
+			var allGood = true;
+			var toRet = createReturnBody(results, user.lastRequestBody);
 
-		res.status(200).send(toRet);
-					
+			res.status(200).send(toRet);
+						
+		});
 	});
+
 });
 
 // function that parses return from venmo server responses
@@ -63,13 +72,16 @@ function createReturnBody(results, originalBody) {
 		delete myLI.access_token;
 		// promise returned an error
 		if (results[i].reason) {
-			myLI.err = results[i].reason.error.message;
+			myLI.err = 'Error, charge did not issue: ' + results[i].reason.error.message;
 			myLI.name = 'unknown';
 		} else { // it worked, now check if user in system
 			if (results[i].value.data.payment.target.user == null) {
-				//myLI.err = 'user not found in system, check phone number';	
+				myLI.err = 'Charge issued succesfully, but user not found in system. Check phone number';
+				myLI.warning = true;
+			} else {
+				console.log(results[i].value.data.payment.target.user.display_name);
+				myLI.name = results[i].value.data.payment.target.user.display_name;	
 			}
-			myLI.name = results[i].value.data.payment.target.user;
 		}
 
 		toRet.push(myLI);

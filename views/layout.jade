@@ -17,17 +17,14 @@ html
       script.
         $(document).ready(function() {
           $('.modal-trigger').leanModal();
-          $('.tooltipped').tooltip({delay: 50});
+          $('.tooltipped').tooltip({delay: 10});
         })
-  
-      script(src="./scripts/dropzone/dropzone.js") 
-      script(src="./scripts/dropzone/customize.js")  
-
+   
       //- this loads initial data from the server and react can use it
       script(id="initial-usergroupList" type="application/json").
         !{usergroupList}
       script(id="initial-chargeList" type="application/json").
-        !{chargeList}        
+        !{chargeList}         
 
   body
     nav
@@ -55,3 +52,7 @@ html
 
     .container
       block content
+  script(src="./scripts/dropzone/dropzone.js") 
+  //-script(src="./scripts/dropzone/dzone-customize.js") 
+  //- script(src="./scripts/buttons.js")
+  script(src='./scripts/bundle.js')
