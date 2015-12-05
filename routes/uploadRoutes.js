@@ -21,6 +21,13 @@ var upload = multer({storage: storage});
 
 // route handles uploading of the file, will send back preview
 // of the charge to client
+
+router.get('/query', function(req, res, next) {
+	User.findOne({_id: req.session.user._id}, function(err, user) {
+		res.send(user);
+	});
+});
+
 router.post('/', upload.any(), function (req, res, next) {
 	
 	console.log('received file...');
@@ -40,7 +47,8 @@ router.post('/', upload.any(), function (req, res, next) {
 	User.findOneAndUpdate({_id: req.session.user._id}, {lastRequestBody: venmoArray}, function (err, doc) {
 		if (err) next(err);
 		res.status(200).send(venmoArray);	
-	})	
+	});
+		
 });
 
 // issues the charges to venmo
@@ -79,6 +87,8 @@ function createReturnBody(results, originalBody) {
 				myLI.err = 'Charge issued succesfully, but user not found in system. Check phone number';
 				myLI.warning = true;
 			} else {
+				console.log("USER INFORMATION");
+				console.log(results[i].value.data.payment.target);
 				console.log(results[i].value.data.payment.target.user.display_name);
 				myLI.name = results[i].value.data.payment.target.user.display_name;	
 			}
