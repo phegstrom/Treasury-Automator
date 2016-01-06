@@ -6,6 +6,8 @@ var Q = require('q');
 var request = require('request');
 var User = require('../models/User');
 
+var Emailer = require('../my_modules/emailer');
+
 var config = require('../config/index');
 var BASE_URL = config.Venmo_BASE_URL;
 
@@ -63,12 +65,22 @@ router.put('/', function (req, res, next) {
 			var allGood = true;
 			var toRet = createReturnBody(results, user.lastRequestBody);
 
-			res.status(200).send(toRet);
+			sendConfirmationEmail(req.session.user.email, toRet, function() {
+				res.status(200).send(toRet);
+			});
 						
 		});
 	});
 
 });
+
+
+function sendConfirmationEmail(userEmail, statusObj, cb) {
+	Emailer.initialize();
+	Emailer.setOptions('hello world', userEmail, 'Charge Log');
+	Emailer.sendEmail();
+	cb();
+}
 
 // function that parses return from venmo server responses
 // and sends easy to use form to front end
