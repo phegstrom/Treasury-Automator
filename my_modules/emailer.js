@@ -25,7 +25,7 @@ module.exports = {
 	        subject: subjectLine, // Subject line
 	        //text: 'See below for your event information:', // plaintext body
 	        html: htmlString // html body
-	    }; 
+	    }; 	
 	},
 
 	sendEmail: function() {

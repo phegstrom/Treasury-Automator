@@ -14,7 +14,7 @@ var BASE_URL = config.Venmo_BASE_URL;
 var storage = multer.diskStorage({
   destination: './uploads',
   filename: function (req, file, cb) {
-    cb(null, 'uploadedGroup.xlsx');
+    cb(null, 'uploadedGroup.xlsx');	
   }
 
 });
@@ -77,9 +77,17 @@ router.put('/', function (req, res, next) {
 
 function sendConfirmationEmail(userEmail, statusObj, cb) {
 	Emailer.initialize();
-	Emailer.setOptions('hello world', userEmail, 'Charge Log');
+	Emailer.setOptions(createHTMLString(statusObj), userEmail, 'Charge Log from Your Recent Transaction');
 	Emailer.sendEmail();
 	cb();
+}
+
+function createHTMLString(arrayofObjs) {
+	var htmlString = '';
+	arrayofObjs.forEach(function (entry, index) {
+		htmlString += '<b>Charge ' + index + ':</b> ' + entry.phone + ', ' + entry.name + ', status - ' + (entry.err ? entry.err : 'OK') + '<br>';
+	});
+	return htmlString;
 }
 
 // function that parses return from venmo server responses

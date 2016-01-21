@@ -10,7 +10,7 @@ block content
           .input-field
             input(placeholder='Enter Password',id='password', type='password', name="password", class='validate')
             label(for='for_email', class='active') Password
-          button.btn(type='submit') Login           
+          button.btn.login-button(type='submit') Login           
         br
         a.waves-effect.waves-light.btn.modal-trigger(href='#sign-up-modal') Sign Up Now!
 
@@ -21,18 +21,21 @@ block content
       .modal-content        
         h4 Register your account below
         br
-        form.col.s6.offset-s3(role='form', action="/register",method="post", style='max-width: 300px;')
+        form.col.s6.offset-s3#signup-form(role='form', action="/register",method="post", style='max-width: 300px;')
           .input-field
-            input(placeholder='John Doe',id='for_email', type='text', name="name")
+            input(placeholder='John Doe',id='for_name', type='text', name="name", class='validate')
             label(for='for_email') Name
           .input-field
-            input(placeholder='Enter Password',id='password', type='text', name="email", class='validate')
+            input(placeholder='jd@gmail.com',id='email-id', type='text', name="email", class='email-input')
             label(for='for_email', class='active') Email
           .input-field
-            input(placeholder='Enter Password',id='password', type='password', name="password", class='validate')
+            input(placeholder='Enter Password',id='password', type='password', name="password", class='password-input')
             label(for='for_email', class='active') Password
+          .input-field
+            input(placeholder='Enter Password',id='password1', type='password', name="password1", class='password-input-2')
+            label(for='for_email', class='active') Re-enter Password            
           br          
-          button.btn-flat(type='submit') Submit
+          button.btn-flat#signup-btn(type='submit') Submit
             i.material-icons.right done
           a.waves-effect.waves-light.btn-flat.modal-action.modal-close(href='#sign-up-modal') Cancel
             i.material-icons.right clear

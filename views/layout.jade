@@ -14,6 +14,7 @@ html
     block scripts
       script(src='./bower_components/jquery/dist/jquery.min.js')
       script(src='./bower_components/Materialize/dist/js/materialize.js')
+      script(src='./bower_components/parsleyjs/dist/parsley.min.js')
       script.
         $(document).ready(function() {
           $('.modal-trigger').leanModal();
@@ -53,6 +54,7 @@ html
     .container
       block content
   script(src="./scripts/dropzone/dropzone.js") 
+  script(src="./scripts/FormValidate.js")
   //-script(src="./scripts/dropzone/dzone-customize.js") 
   //- script(src="./scripts/buttons.js")
   script(src='./scripts/bundle.js')
