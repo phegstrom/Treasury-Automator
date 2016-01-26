@@ -2,10 +2,11 @@ doctype html
 html
   head
     title Treasury
-    link(rel='stylesheet', href='./bower_components/Materialize/dist/css/materialize.css')    
-    link(rel='stylesheet', href='./css/build/combined.min.css')
+    
+    //- link(rel='stylesheet', href='./css/build/combined.min.css')
     link(rel='stylesheet', href='./css/layout.css')
     link(rel='stylesheet', href='https://fonts.googleapis.com/icon?family=Material+Icons')
+    link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css')      
 
     //- dropzone
     link(rel='stylesheet', href='./css/dropzone/dropzone.css')
@@ -13,7 +14,7 @@ html
 
     block scripts
       script(src='./bower_components/jquery/dist/jquery.min.js')
-      script(src='./bower_components/Materialize/dist/js/materialize.js')
+      script(src='https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js')
       script(src='./bower_components/parsleyjs/dist/parsley.min.js')
       script.
         $(document).ready(function() {
@@ -53,8 +54,10 @@ html
 
     .container
       block content
-  script(src="./scripts/dropzone/dropzone.js") 
-  script(src="./scripts/FormValidate.js")
-  //-script(src="./scripts/dropzone/dzone-customize.js") 
-  //- script(src="./scripts/buttons.js")
-  script(src='./scripts/bundle.js')
+
+
+    script(src="./scripts/dropzone/dropzone.js") 
+    script(src="./scripts/FormValidate.js")
+    //-script(src="./scripts/dropzone/dzone-customize.js") 
+    //- script(src="./scripts/buttons.js")
+    script(src='./scripts/bundle.js')
