@@ -36,16 +36,12 @@ router.post('/', upload.any(), function (req, res, next) {
 	console.log('saved file: ' + req.files[0].filename);
 	console.log('parsing file...');
 	var obj = xlsx.parse('./uploads/'+req.files[0].filename);
-	console.log('new object');
-	console.log(obj[0].data);
 
 	// check if excel document correct format
 	var venmoArray;
 	if(obj[0].data[0].length != 3) venmoArray = {err: 'file not in correct format!'};
 	else venmoArray = createVenmoObjects(obj[0].data, req);
 	
-	// console.log(venmoArray);
-
 	User.findOneAndUpdate({_id: req.session.user._id}, {lastRequestBody: venmoArray}, function (err, doc) {
 		if (err) next(err);
 		res.status(200).send(venmoArray);	
@@ -58,10 +54,10 @@ router.put('/', function (req, res, next) {
 	console.log('issuing venmo charges...');
 	User.findOne({_id: req.session.user._id}).exec(function(err, user) {
 		if (err) next(err);
-		console.log(user.lastRequestBody);
 		issueAllVenmoCharges(user.lastRequestBody, req.session.user.access_token).then(function(results) {
 			console.log('got results');
 			console.log(results);
+
 			var allGood = true;
 			var toRet = createReturnBody(results, user.lastRequestBody);
 
@@ -107,16 +103,12 @@ function createReturnBody(results, originalBody) {
 				myLI.err = 'Charge issued succesfully, but user not found in system. Check phone number';
 				myLI.warning = true;
 			} else {
-				console.log("USER INFORMATION");
-				console.log(results[i].value.data.payment.target);
-				console.log(results[i].value.data.payment.target.user.display_name);
 				myLI.name = results[i].value.data.payment.target.user.display_name;	
 			}
 		}
 
 		toRet.push(myLI);
 	}
-	console.log(toRet);
 	return toRet;
 }
 
