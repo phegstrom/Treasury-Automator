@@ -12,6 +12,7 @@ A small side-project module that allows for mass venmo charge issuances using an
 * cd into the project directory
 * You now must install the dependencies that are embedded within the project. Do so by typing
  `$ npm install`
+ `$ bower install`
 * Finally, make sure all build files are compiled. Do so by typing  
 `$ grunt build`
  
@@ -21,7 +22,7 @@ A small side-project module that allows for mass venmo charge issuances using an
  
  2. Spin up a mongoDB instance by typing
 
-  `$ mongod --dbpath ./data/db`
+  `$ mongod --dbpath your_db_directory`
  3. Open new terminal window and type
 
   `$ node ./bin/www`
