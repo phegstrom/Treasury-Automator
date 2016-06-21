@@ -36,11 +36,13 @@ var reenterPasswordOptions = [
 var loginEmailOptions = [
 				{selector: '#for_email_login', attribute: 'data-parsley-required', value: ''},
 				{selector: '#for_email', attribute: 'data-parsley-type', value: 'email'},
-				{selector: '#for_email', attribute: 'type', value: 'email'},				
+				{selector: '#for_email', attribute: 'type', value: 'email'},	
+				{selector: '#for_email_login_label', attribute: 'data-error', value: 'Not a valid email'}
 				];
 
 var loginPasswordOptions = [
-				{selector: '#for_password_login', attribute: 'data-parsley-required', value: ''}
+				{selector: '#for_password_login', attribute: 'data-parsley-required', value: ''},
+				{selector: '#for_password_login_label', attribute: 'data-error', value: 'Required'}
 				];				
 
 // bind forms to parsley

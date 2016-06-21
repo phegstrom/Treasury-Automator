@@ -5,8 +5,11 @@ html
     
     //- link(rel='stylesheet', href='./css/build/combined.min.css')
     link(rel='stylesheet', href='./css/layout.css')
+    //-link(rel='stylesheet', href='./css/build/layout.min.css')
+
+    //- Google front end APIs
     link(rel='stylesheet', href='https://fonts.googleapis.com/icon?family=Material+Icons')
-    link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css')      
+    link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css')
 
     //- dropzone
     link(rel='stylesheet', href='./css/dropzone/dropzone.css')
@@ -21,13 +24,7 @@ html
           $('.modal-trigger').leanModal();
           $('.tooltipped').tooltip({delay: 10});
         })
-   
-      //- this loads initial data from the server and react can use it
-      script(id="initial-usergroupList" type="application/json").
-        !{usergroupList}
-      script(id="initial-chargeList" type="application/json").
-        !{chargeList}         
-
+       
   body
     nav
       .nav-wrapper
@@ -58,6 +55,4 @@ html
 
     script(src="./scripts/dropzone/dropzone.js") 
     script(src="./scripts/FormValidate.js")
-    //-script(src="./scripts/dropzone/dzone-customize.js") 
-    //- script(src="./scripts/buttons.js")
     script(src='./scripts/bundle.js')

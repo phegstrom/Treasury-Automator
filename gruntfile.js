@@ -30,9 +30,9 @@ module.exports = function(grunt){
 			dist:{
 				files: [{
 					expand: true,
-					cwd: 'public/sass/',
+					cwd: 'public/sass',
 					src: ['**/*.scss'],
-					dest: 'public/css/',
+					dest: 'public/css',
 					ext: '.css'
 				}]
 			}
@@ -70,7 +70,7 @@ module.exports = function(grunt){
 			target: {
 				files: [{
 					expand: true,
-					cwd: 'public/css/build',
+					cwd: 'public/css/',
 					src: ['*.css', '!*.min.css'],
 					dest: 'public/css/build/',
 					ext: '.min.css'
@@ -93,8 +93,10 @@ module.exports = function(grunt){
 	// individual commands that can be executed from command line
 	// type 'grunt <task alias name>'
 	grunt.registerTask('react', ['browserify']);
+	grunt.registerTask('sassBuild',['sass']);
+	grunt.registerTask('minify',['cssmin']);
 	grunt.registerTask('css', ['sass', 'concat:css', 'cssmin']);
 	//grunt.registerTask('build', ['browserify', 'sass', 'concat', 'cssmin']);
-	grunt.registerTask('build', ['browserify']);
+	grunt.registerTask('build', ['browserify', 'sass', 'cssmin']);
 
 };

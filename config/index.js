@@ -8,9 +8,10 @@ conf.Venmo_Auth_URL = 'http://api.venmo.com/v1/oauth/authorize?';
 conf.Venmo_Auth_ACCESSTOKEN_URL = 'https://api.venmo.com/v1/oauth/access_token';
 conf.Venmo_scopeString = 'make_payments access_profile access_email access_phone access_balance';
 
+// for sending Log to user
 conf.SystemEmail = 'soCal458@gmail.com';
 conf.SystemEmailPassword = 'soCal458password';
-
+	
 /* ------------------- Choose Sandbox or Actual API ------------------*/
 conf.Venmo_BASE_URL = 'https://sandbox-api.venmo.com/v1/payments';
 // conf.Venmo_BASE_URL = 'https://api.venmo.com/v1/payments';

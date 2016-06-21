@@ -7,11 +7,11 @@ block content
         .row
           .input-field.col.s12
             input(placeholder='Enter Email',id='for_email_login', type='email',name="email")
-            label(for='for_email_login', data-error='error', class='active') Email
+            label(for='for_email_login', id='for_email_login_label', class='active') Email
         .row
           .input-field.col.s12
             input(placeholder='Enter Password',id='for_password_login', type='password', name="password",class='')
-            label(for='for_password_login', class='active') Password  
+            label(for='for_password_login', id='for_password_login_label',class='active') Password  
         button.btn.login-button(type='submit') Login           
         br
         br
