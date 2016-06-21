@@ -1,9 +1,12 @@
-Treasury
+Treasury-Automator
 ===========
+
+#### About
+A small side-project module that allows for mass venmo charge issuances using an Excel sheet. Will eventually be incorporated into Treasury as an additional feature. 
 
 #### Getting Started
 
-* Install node using [Node Version Manager](https://github.com/creationix/nvm). We suggest using the cURL install script.
+* Install node using [Node Version Manager](https://github.com/creationix/nvm). I suggest using the cURL install script.
 * Make sure you have MongoDB installed as well.  
 * git clone this repo into your working directory  
 * cd into the project directory
